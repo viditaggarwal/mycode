@@ -1,11 +1,13 @@
 #include <iostream>
 #include <stdlib.h>
+#include <stack>
 using namespace std;
 
 struct node{
        int data;
        node *left, *right, *root;              
 };
+
 
 node *createNode(int n){
      node *newnode = new node;
@@ -75,19 +77,14 @@ void preorder(node *T){
 bool search(node *T, int n){
 	if(T!=NULL){	
 		if(T->data == n){
-			cout<<"equal"<<T->data<<endl;
 			return true;
 		}
 		else{	
-		//cout<<"search is "<<search(T->left, n)<<endl;
 			if( n < T->data && T->left != NULL){
-				cout<<"less"<<endl;
-				//cout<<"search is "<<search(T->left, n)<<endl;
 				if(search(T->left, n) == 1)return true;
 				else return false;
 			}else{
 				if(n > T->data && T->right != NULL){
-					cout<<"greater"<<endl;
 					if(search(T->right, n) == 1)return true;
 					else return false;
 				}
@@ -97,23 +94,108 @@ bool search(node *T, int n){
 	}
 }
 
+node *lca(node *root, int n1, int n2){
+	if (root == NULL) return NULL;
+ 
+    if (root->data > n1 && root->data > n2)
+        return lca(root->left, n1, n2);
+ 
+    if (root->data < n1 && root->data < n2)
+        return lca(root->right, n1, n2);
+ 
+    return root;	
+}
+
+
+void nonrecinorder(node *ptr){
+	int top =0;
+    node* stack[50];
+    stack[0] = NULL;
+	while(1)
+     {
+     	if(ptr != NULL )
+        {
+     	   stack[++top] = ptr;
+           ptr = ptr->left;
+        }else{
+           ptr = stack[top--];
+           if( ptr == NULL)
+              return;
+           cout<<"  "<<ptr->data;
+           if(ptr->right != NULL)
+              ptr = ptr->right;
+           else
+              ptr = NULL;
+        }
+     }
+     //return stack;
+}
+
+void nonrecpreorder(node *ptr){
+	int top=0;
+	node *stack[50];
+	stack[0] = NULL;
+	while(1){
+		if(ptr!=NULL){
+			cout<<ptr->data<<endl;
+			stack[++top] = ptr;	
+			ptr = ptr->left;
+		}else{
+           ptr = stack[top--];
+           if( ptr == NULL)
+              return;
+           if(ptr->right != NULL)
+              ptr = ptr->right;
+           else
+              ptr = NULL;
+        }
+	}
+}
+
+void nonrecpostorder(node *ptr){
+	int top=0;
+	node *stack[50];
+	stack[0] = NULL;
+	node *prev = NULL;
+	while(1){
+		if(ptr!=NULL){
+			stack[++top] = ptr;	
+			ptr = ptr->left;			
+		}else{		   
+           ptr = stack[top];
+		   if( ptr == NULL)
+              return;           
+           if(ptr->right != NULL && ptr->right != prev){
+			  ptr = ptr->right;
+           }else{
+           	   top--;
+           	   cout<<ptr->data<<endl;
+           	   prev = ptr;
+		       ptr = NULL;  
+      	   }
+        }
+	}
+}
+
+void printStack(node* s){
+	
+}
 
 int main(){
-    node *T = new node;
+	node *T = new node;
     T->root = NULL;
 	insert(T,30);
 	insert(T,20);
 	insert(T,50);
-	insert(T,40);
-	//cout<<search(T->root, 40)<<endl;
-	//cout<<search(T->root, 20)<<endl;
-	//cout<<search(T->root, 50)<<endl;
-	//cout<<search(T->root, 49)<<endl;
-	//inorder(T->root);
-	//preorder(T->root);
-	//postorder(T->root);
-	//cout<<T->root->left->data<<endl;
-    system("pause");  
+	insert(T,10);
+	insert(T,15);
+	insert(T,25);
+	insert(T,35);
+	insert(T,5);
+	insert(T,60);
+	insert(T,32);
+	nonrecpostorder(T->root);
+	system("pause");
     return 0;    
 }
 
