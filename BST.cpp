@@ -1,12 +1,20 @@
 #include <iostream>
 #include <stdlib.h>
 #include <stack>
+#include<queue>
 using namespace std;
+
+
 
 struct node{
        int data;
        node *left, *right, *root;              
 };
+
+queue<node*> q;
+queue<node*> val;
+queue<node*> inq;
+queue<node*> emp;
 
 
 node *createNode(int n){
@@ -51,10 +59,9 @@ void insert(node *T, int n){
 
 void inorder(node *T){
 	if(T != NULL){
-		inorder(T->left);		
+		inorder(T->left);	
 		cout<<T->data<<endl;
-		inorder(T->right);
-					
+		inorder(T->right);					
 	}	
 }
 
@@ -69,8 +76,9 @@ void postorder(node *T){
 void preorder(node *T){
 	if(T != NULL){
 		cout<<T->data<<endl;
-		postorder(T->left);			
-		postorder(T->right);	
+		//inq.push(T);
+		preorder(T->left);			
+		preorder(T->right);	
 	}	
 }
 
@@ -177,7 +185,68 @@ void nonrecpostorder(node *ptr){
 	}
 }
 
-void printStack(node* s){
+
+void printqueue(queue<node*> qp){
+	while(!qp.empty()){
+		cout<<(qp.front())->data<<endl;
+		qp.pop();
+	}
+}
+
+void bfs(node *ptr){	
+	q.push(ptr);
+	while(!q.empty()){
+		node *nd = q.front();
+		val.push(nd);
+		q.pop();
+		if(nd->left != NULL || nd ->right!=NULL){
+			if(nd->left != NULL){
+				q.push(nd->left);
+			}
+			if(nd->right != NULL){
+				q.push(nd->right);
+			}			
+		}		
+	}
+}
+
+void checkMirror(node *root, int n){
+     node *temp = root;
+     while(temp != NULL){
+          if(n >= temp->data){
+               if(temp->left!=NULL){
+                    temp = temp->left;
+               }else{
+               		node *nn = createNode(n);
+                    temp->left = nn;
+					break;       
+               }
+                    
+          }else{
+          		if(temp->right != NULL){
+                    temp = temp->right;     
+                }else{
+                	node *nn = createNode(n);
+					temp->right = nn;
+					break;       
+                }
+          }                  
+     }
+}
+
+void insertMirror(node *T, int n){
+     if(T->root == NULL){
+     	   T->root = createNode(n);                      
+     }else{
+     	   checkMirror(T->root, n);      
+     }
+}
+
+void createMirror(node* ptr){
+	while(!val.empty()){
+		insertMirror(ptr,(val.front())->data);
+		val.pop();	
+	}
 	
 }
 
@@ -194,7 +263,15 @@ int main(){
 	insert(T,5);
 	insert(T,60);
 	insert(T,32);
-	nonrecpostorder(T->root);
+	preorder(T->root);
+	bfs(T->root);
+	node* mir = new node;
+	mir->root=NULL;
+	createMirror(mir);
+	preorder(mir->root);
+	//swap(inq, emp);
+	//preorder(T->root);
+	printqueue(val);
 	system("pause");
     return 0;    
 }
