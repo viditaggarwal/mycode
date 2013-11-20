@@ -16,7 +16,7 @@ int main(){
 		if(fin.is_open()){
 			while(fin.good()){
 				fin>>x;
-				word = strtok(x,cu);
+				word = x.find_first_not_of()
 				cout<<word<<endl;
 				//cout<<x.find(cu)<<endl;
 				//cout<<x.substr(10,x.find(cu))<<endl;

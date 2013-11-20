@@ -4,18 +4,22 @@
 #include<queue>
 using namespace std;
 
-
-
 struct node{
        int data;
        node *left, *right, *root;              
 };
 
+struct result{
+	node *nd;
+	int level=0;
+};
+
+
 queue<node*> q;
 queue<node*> val;
 queue<node*> inq;
 queue<node*> emp;
-
+int lvl=0;
 
 node *createNode(int n){
      node *newnode = new node;
@@ -250,6 +254,57 @@ void createMirror(node* ptr){
 	
 }
 
+result* checkLevel(node *root){
+	result *l;
+	result *r;
+	if(root->left == NULL && root->right == NULL){
+		result *rt = new result;
+		rt->nd=root;
+		rt->level = lvl;
+		return rt;
+	}
+	if(root->left!=NULL){
+		l = checkLevel(root->left);
+		l->level++;
+		lvl = l->level;
+	}	
+	if(root->right!=NULL){
+		r = checkLevel(root->right);
+		r->level++;
+		lvl = r->level;
+	}
+	if(l->level <= r->level){
+		return l;
+	}else{
+		return r;
+	}
+}
+
+void checkBinary(node *root, int n){
+	result *s = checkLevel(root);
+	node *nn = createNode(n);
+	
+}
+
+void insertBinary(node *root, int n){
+	if(root == NULL){
+		root->data = n;		
+	}else{
+		checkBinary(root,n);
+	}
+}
+
+int visited = -1;
+void LeftMostInEveryLevel (node *root, int level) {
+     if (root != NULL) {
+              if (level > visited) {
+                    visited = level;
+              }
+              LeftMostInEveryLevel (root->left, level + 1);
+              LeftMostInEveryLevel (root->right, level + 1);
+     }
+}
+
 int main(){
 	node *T = new node;
     T->root = NULL;
@@ -260,15 +315,18 @@ int main(){
 	insert(T,15);
 	insert(T,25);
 	insert(T,35);
-	insert(T,5);
 	insert(T,60);
 	insert(T,32);
-	preorder(T->root);
+	insert(T,31);
+	//result *r = checkLevel(T->root);
+	//cout<<r->nd->data<<endl;
+	LeftMostInEveryLevel(T->root, 0);
+	//preorder(T->root);
 	bfs(T->root);
-	node* mir = new node;
-	mir->root=NULL;
-	createMirror(mir);
-	preorder(mir->root);
+	//node* mir = new node;
+	//mir->root=NULL;
+	//createMirror(mir);
+	//preorder(mir->root);
 	//swap(inq, emp);
 	//preorder(T->root);
 	printqueue(val);
