@@ -298,7 +298,8 @@ int visited = -1;
 void LeftMostInEveryLevel (node *root, int level) {
      if (root != NULL) {
               if (level > visited) {
-                    visited = level;
+                        cout << "Level = " << level << ", Node = " << root->data << endl;
+                        visited = level;
               }
               LeftMostInEveryLevel (root->left, level + 1);
               LeftMostInEveryLevel (root->right, level + 1);
