@@ -7,6 +7,12 @@ void swap(int &a, int &b){
 	a=b;
 	b=temp;	
 }
+void printarr(int *arr){
+	for(int i=0;i<8;i++){
+		cout<<arr[i]<<"    ";
+	}
+	cout<<endl;
+}
 
 int pivot(int *arr, int start, int end){
 	int p = start;
@@ -32,6 +38,7 @@ int pivot(int *arr, int start, int end){
 	   }
 	}
 	swap(arr[j], arr[p]);
+	printarr(arr);
 	return j;
 }
 
@@ -50,14 +57,14 @@ void quick(int *arr, int n){
 }
 
 int main(){
-	int a[] = {10,5,7,2,9,3,1,6,8,4}; 
+	int a[] = {5,4,7,2,8,3,1,6}; 
 	//int a[] = {39,158,98,45,67,189,7,88,29,100};
 	int *arr = a;
-	for(int i=0;i<10;i++){
+	for(int i=0;i<8;i++){
 		cout<<arr[i]<<"\t";
 	}
-	quick(arr,10);
-	for(int i=0;i<10;i++){
+	quick(arr,8);
+	for(int i=0;i<8;i++){
 		cout<<arr[i]<<"\t";
 	}	
 	return 0;
