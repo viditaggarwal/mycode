@@ -54,8 +54,7 @@ void reverseLL(node *ptr){
 			swap(ptr);
 			ptr = ptr->right;
 		}
-	}
-	
+	}	
 }
 
 int main(){

@@ -27,6 +27,7 @@ class toh{
 		}
 		
 		void moveSingleDisk(int src, int dst){
+			cout<<"move from rod"<<src<<" to rod"<<dst<<endl;
 			if(rod[src].size()>0){
 				rod[dst].push(rod[src].top());
 				rod[src].pop();		
@@ -41,9 +42,9 @@ class toh{
 };
 
 int main(){
-	toh *t = new toh(5);
+	toh *t = new toh(12);
 	t->printStatus();
-	t->moveTower(5,0,2,1);
+	t->moveTower(12,0,1,2);
 	t->printStatus();
 	return 0;
 }

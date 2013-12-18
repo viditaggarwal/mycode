@@ -17,7 +17,7 @@ void mergesort(int *arr, int *b, int low, int high){
 		mergesort(arr,b, low, mid);
 		mergesort(arr,b, mid+1, high);
 		merge(arr,b, low, mid, high);
-		printarr(arr);
+		//printarr(arr);
 	}
 }
 
