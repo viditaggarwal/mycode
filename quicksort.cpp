@@ -19,10 +19,9 @@ int pivot(int *arr, int start, int end){
 	int i=start;
 	int j=end;
 	int v = arr[p];
-	cout<<"pivot is "<<arr[p]<<endl;
 	while(i<j)
 	{
-		cout<<"while i and j are "<<i<<","<<j<<endl;
+	   cout<<"while i and j are "<<i<<","<<j<<endl;
 	   while((arr[i]<=v)&&(i<end))
 	   {
 			i++;
@@ -33,12 +32,11 @@ int pivot(int *arr, int start, int end){
 	   }	 
 	   if(i<j)
 	   { 
-	   		cout<<"if i les j"<<endl;
-			swap(arr[i], arr[j]);
+	   		swap(arr[i], arr[j]);
 	   }
 	}
 	swap(arr[j], arr[p]);
-	printarr(arr);
+	//printarr(arr);
 	return j;
 }
 
@@ -57,12 +55,11 @@ void quick(int *arr, int n){
 }
 
 int main(){
-	int a[] = {5,4,7,2,8,3,1,6}; 
+	//int a[] = {5,4,7,2,8,3,1,6}; 
+	int a[] = {30, 10, 50, 20, 90, 15, 35, 80};
 	//int a[] = {39,158,98,45,67,189,7,88,29,100};
 	int *arr = a;
-	for(int i=0;i<8;i++){
-		cout<<arr[i]<<"\t";
-	}
+	
 	quick(arr,8);
 	for(int i=0;i<8;i++){
 		cout<<arr[i]<<"\t";

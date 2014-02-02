@@ -8,10 +8,8 @@ void recPermute(string sofar, string rest){
 		for(int i=0;i<rest.length();i++){
 			string next = sofar+rest[i];
 			recPermute(next, rest.substr(0,i)+rest.substr(i+1));			
-		}
-		
-	}
-	
+		}		
+	}	
 }
 
 

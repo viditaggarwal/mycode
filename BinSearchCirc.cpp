@@ -27,41 +27,30 @@ void print(circarr *a){
 
 bool binsearch(circarr *a, int n, int start, int end){
 	int mid = (start + end) /2;
-	if(end < start){
-		return false;
-	}
-	else{	
-		if(a->arr[mid] == n){
-			return true;
-		}else{		
+	if(end > start){	
+		if(a->arr[mid] == n)return true;
+		else{		
 			if(n < a->arr[mid]){
-				if(n < a->arr[start]){
-					return binsearch(a,n,mid+1, end);
-				}else{
-					if(n > a->arr[start]){
-						return binsearch(a,n,start,mid-1);
-					}else{
-						if(a->arr[start] == n){
-							return true;
-						}
+				if(n < a->arr[start])return binsearch(a,n,mid+1, end);
+				else{
+					if(n > a->arr[start])return binsearch(a,n,start,mid-1);
+					else{
+						if(a->arr[start] == n)return true;
 					}
 				}
 			}else{
 				if(n > a->arr[mid]){
-					if(n > a->arr[end]){
-						return binsearch(a,n,start, mid-1);
-					}else{
-						if(n < a->arr[end]){
-							return binsearch(a,n,mid+1,end);
-						}else{
-							if(a->arr[end] == n){
-								return true;
-							}
+					if(n > a->arr[end])return binsearch(a,n,start, mid-1);
+					else{
+						if(n < a->arr[end])return binsearch(a,n,mid+1,end);
+						else{
+							if(a->arr[end] == n)return true;
 						}
 					}
 				}
 			}
 		}
+		return false;
 	}
 }
 

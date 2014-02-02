@@ -1,8 +1,10 @@
-#include <iostream>
-#include <stdlib.h>
-#include <stack>
+#include<iostream>
+#include<stdlib.h>
+#include<stack>
 #include<queue>
+#include<vector>
 using namespace std;
+
 
 struct node{
        int data;
@@ -19,7 +21,11 @@ queue<node*> q;
 queue<node*> val;
 queue<node*> inq;
 queue<node*> emp;
+queue<node*> temp;
+vector<node*> listVec;
+int cntr = 0;
 int lvl=0;
+int level = 0;
 
 node *createNode(int n){
      node *newnode = new node;
@@ -87,19 +93,12 @@ void preorder(node *T){
 }
 
 bool search(node *T, int n){
-	if(T!=NULL){	
-		if(T->data == n){
-			return true;
-		}
-		else{	
-			if( n < T->data && T->left != NULL){
-				if(search(T->left, n) == 1)return true;
-				else return false;
-			}else{
-				if(n > T->data && T->right != NULL){
-					if(search(T->right, n) == 1)return true;
-					else return false;
-				}
+	if(T){	
+		if(T->data == n)return true;		
+		else{
+			if( n < T->data && T->left)return search(T->left, n);
+			else{
+				if(n > T->data && T->right)	return search(T->right, n);
 			}
 			return false;
 		}
@@ -107,14 +106,11 @@ bool search(node *T, int n){
 }
 
 node *lca(node *root, int n1, int n2){
-	if (root == NULL) return NULL;
- 
+	if (!root) return NULL; 
     if (root->data > n1 && root->data > n2)
-        return lca(root->left, n1, n2);
- 
+        return lca(root->left, n1, n2); 
     if (root->data < n1 && root->data < n2)
-        return lca(root->right, n1, n2);
- 
+        return lca(root->right, n1, n2); 
     return root;	
 }
 
@@ -306,31 +302,124 @@ void LeftMostInEveryLevel (node *root, int level) {
      }
 }
 
+void convertLinkedList(node *ptr){
+	q.push(ptr);
+	cntr = 1;
+	while(!q.empty()){		
+		level++;
+		int sz = cntr;
+		cntr = 0;
+		node *head = NULL;
+		node *prev = NULL;
+		for(int i = 0;i<sz;i++){
+			node *nd = q.front();
+			node *nn1 = new node;
+			nn1->data = q.front()->data;
+			nn1->right = NULL;
+			q.pop();			
+			if(head == NULL){
+				head = nn1;
+				prev = nn1;
+			}else{
+				prev->right = nn1;
+				prev = nn1;
+			}
+			if(nd->left != NULL || nd->right!=NULL){
+				if(nd->left != NULL){
+					q.push(nd->left);
+					cntr++;
+				}
+				if(nd->right != NULL){
+					q.push(nd->right);
+					cntr++;
+				}
+			}
+		}
+		listVec.push_back(head);	
+	}	
+}
+
+void printLL(node *ptr){
+	if(ptr){
+		cout<<ptr->data<<endl;
+		printLL(ptr->right);
+	}
+}
+
+bool checkForSubtree(node *head, node *subHead){
+	bool l,r;
+	if(subHead){
+		if(head->data == subHead->data){
+			if(subHead->left){
+				l = checkForSubtree(head->left, subHead->left);
+			}else l = true;
+			if(subHead->right){
+				r = checkForSubtree(head->right, subHead->right);
+			}else r = true;
+			if(l&&r)return true;
+			else return false;
+		}else{
+			return false;
+		}
+	}
+}
+
+bool checkSubtree(node *head, node *subHead){
+	bool left = false, right=false;
+	if(head){
+		if(head->data == subHead->data){
+			if(checkForSubtree(head, subHead))return true;
+			else{
+				left = checkSubtree(head->left, subHead);
+				right = checkSubtree(head->right, subHead);
+			}
+		}else{
+			left = checkSubtree(head->left, subHead);
+			right = checkSubtree(head->right, subHead);
+		}
+	}
+	if(left || right)return true;
+	else return false;
+}
+
 int main(){
 	node *T = new node;
     T->root = NULL;
 	insert(T,30);
 	insert(T,20);
 	insert(T,50);
+	insert(T,50);
 	insert(T,10);
-	insert(T,15);
+	//insert(T,15);
 	insert(T,25);
 	insert(T,35);
 	insert(T,60);
-	insert(T,32);
-	insert(T,31);
+	
+	node *S = new node;
+    S->root = NULL;
+	insert(S,50);
+	insert(S,60);
+	cout<<checkSubtree(T->root, S->root);
+	//cout<<search(T->root, 50);
+	//insert(T,32);
+	//insert(T,31);
 	//result *r = checkLevel(T->root);
 	//cout<<r->nd->data<<endl;
-	LeftMostInEveryLevel(T->root, 0);
+	//LeftMostInEveryLevel(T->root, 0);
 	//preorder(T->root);
-	bfs(T->root);
+	//bfs(T->root);
 	//node* mir = new node;
 	//mir->root=NULL;
 	//createMirror(mir);
 	//preorder(mir->root);
 	//swap(inq, emp);
 	//preorder(T->root);
-	printqueue(val);
+	//convertLinkedList(T->root);
+	/*for(int i=0;i<listVec.size();i++){
+		cout<<"level is "<<i<<endl;
+		printLL(listVec[i]);
+	}*/
+	//printqueue(val);
 	system("pause");
     return 0;    
 }
