@@ -278,8 +278,7 @@ result* checkLevel(node *root){
 
 void checkBinary(node *root, int n){
 	result *s = checkLevel(root);
-	node *nn = createNode(n);
-	
+	node *nn = createNode(n);	
 }
 
 void insertBinary(node *root, int n){
